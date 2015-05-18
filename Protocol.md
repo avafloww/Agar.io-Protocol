@@ -26,7 +26,7 @@ Sent to the client by the server to update information about one or more nodes. 
 | 0        | uint8         | Packet ID
 | 1        | uint16        | Number of nodes to be destroyed
 | 3...?    | Node Data     | Data for all nodes
-| ?        | uint8         | Always 0; terminates the node data listing
+| ?        | uint32        | Always 0; terminates the node data listing
 | ?        | uint16        | Always 0; discarded by the client
 | ?        | uint32        | Number of active nodes
 | ?...?    | uint32        | Node ID of each active node
