@@ -62,9 +62,9 @@ Updates the position and size of the player. Probably used when initially spawni
 | Position | Data Type | Description
 |----------|-----------|-----------------
 | 0        | uint8     | Packet ID
-| 1        | float64   | X position
-| 9        | float64   | Y position
-| 17       | float64   | Size
+| 1        | float32   | X position
+| 9        | float32   | Y position
+| 17       | float32   | Size
 
 ### Packet 20: Clear All Nodes
 Clears all nodes off of the player's screen.
@@ -81,20 +81,12 @@ Adds a node to the player's screen.
 | 0        | uint8     | Packet ID
 | 1        | uint32    | Node ID
 
-### Packet 48: Unknown
-
-| Position | Data Type | Description
-|----------|-----------|-----------------
-| 0        | uint8     | Packet ID
-| 1...?    | string    | Node name?
-
 ### Packet 49: Unknown
 
 | Position | Data Type | Description
 |----------|-----------|-----------------
 | 0        | uint8     | Packet ID
-| 1        | uint32    | 
-|          |           | The following repeats the number of times specified by position 1:
+| 1        | uint32    | The following repeats the number of times specified by this field.
 | ?        | uint32    | Node ID?
 | ?        | string    | Node name?
 
