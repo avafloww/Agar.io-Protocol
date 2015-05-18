@@ -81,14 +81,15 @@ Adds a node to the player's screen.
 | 0        | uint8     | Packet ID
 | 1        | uint32    | Node ID
 
-### Packet 49: Unknown
+### Packet 49: Update Leaderboard
+Updates the leaderboard on the client's screen.
 
 | Position | Data Type | Description
 |----------|-----------|-----------------
 | 0        | uint8     | Packet ID
 | 1        | uint32    | The following repeats the number of times specified by this field.
-| ?        | uint32    | Node ID?
-| ?        | string    | Node name?
+| ?        | uint32    | Node ID
+| ?        | string    | Node name
 
 ### Packet 64: Set Border
 Sets the map border.
