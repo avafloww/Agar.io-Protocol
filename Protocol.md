@@ -1,19 +1,116 @@
 # Agar.io Protocol
 
+Note that a lot of the documentation here is just guesswork for the time being. As work progresses on Ogar, my open-source Agar.io server implementation (creative name, I know), this documentation will be updated further.
+
 ## Data Types
 Agar.io uses standard JavaScript DataView data types, for the most part. *Note that in contrast to standard DataView behavior, all multi-byte values are encoded across the wire as little endian.* This table is a reference of some of the commonly used data types.
 
 | Data Type | Description 
 |-----------|-----------
-| uint8     | Unsigned 1 byte integer
-| uint16    | Unsigned 2 byte integer
-| uint32    | Unsigned 4 byte integer
-| float64   | Signed 8 byte floating point value
-| string    | UTF-16 string (2 bytes per character)
+| uint8     | Unsigned 1 byte integer (byte)
+| uint16    | Unsigned 2 byte integer (short)
+| uint32    | Unsigned 4 byte integer (int)
+| float32   | Signed 4 byte floating point value (float)
+| float64   | Signed 8 byte floating point value (double)
+| string    | Null-terminated UTF-16 string (2 bytes per character)
+| boolean   | uint8 where 0 = false, 1 = true
 
 Each packet starts with a uint8 containing the packet ID.
 
-## Packet 0: Set Nickname
+## Clientbound Packets
+### Packet 16: Update Nodes
+Sent to the client by the server to update information about one or more nodes. Nodes to be destroyed are placed at the beginning of the node data list.
+
+| Position | Data Type     | Description
+|----------|---------------|-----------------
+| 0        | uint8         | Packet ID
+| 1        | uint16        | Number of nodes to be destroyed
+| 3...?    | Node Data     | Data for all nodes
+| ?        | uint8         | Always 0; terminates the node data listing
+| ?        | uint16        | Always 0; discarded by the client
+| ?        | uint32        | Number of active nodes
+| ?...?    | uint32        | Node ID of each active node
+
+#### Node Data
+Each node is described by the following data. This data repeats n times at the end of the Update Nodes packet, where n is the number specified by position 1 in the packet (number of nodes).
+
+| Offset | Data Type | Description
+|--------|-----------|-------------------
+| 0      | uint32    | Node ID
+| 4      | float32   | X position
+| 8      | float32   | Y position
+| 12     | float32   | Size
+| 16     | uint8     | Color (Red component)
+| 17     | uint8     | Color (Green component)
+| 18     | uint8     | Color (Blue component)
+| 19     | uint8     | Flags - see below
+|        |           | Skip a specific number of bytes based on the flags field. See below.
+| ?      | string    | Node name
+
+The flags field is 1 byte in length, and is a bitfield. If no flag that specifies the offset is set, 0 bytes will be skipped. Here's a table describing the known behaviors of setting specific flags:
+
+| Bit | Behavior
+|-----|------------------
+| 1   | If set, the node is a virus
+| 2   | Advance offset after flags by 4 bytes
+| 4   | Advance offset after flags by 8 bytes
+| 8   | Advance offset after flags by 16 bytes
+
+### Packet 17: Update Position and Size
+Updates the position and size of the player. Probably used when initially spawning in.
+
+| Position | Data Type | Description
+|----------|-----------|-----------------
+| 0        | uint8     | Packet ID
+| 1        | float64   | X position
+| 9        | float64   | Y position
+| 17       | float64   | Size
+
+### Packet 20: Clear All Nodes
+Clears all nodes off of the player's screen.
+
+| Position | Data Type | Description
+|----------|-----------|-----------------
+| 0        | uint8     | Packet ID
+
+### Packet 32: Add Node
+Adds a node to the player's screen.
+
+| Position | Data Type | Description
+|----------|-----------|-----------------
+| 0        | uint8     | Packet ID
+| 1        | uint32    | Node ID
+
+### Packet 48: Unknown
+
+| Position | Data Type | Description
+|----------|-----------|-----------------
+| 0        | uint8     | Packet ID
+| 1...?    | string    | Node name?
+
+### Packet 49: Unknown
+
+| Position | Data Type | Description
+|----------|-----------|-----------------
+| 0        | uint8     | Packet ID
+| 1        | uint32    | 
+|          |           | The following repeats the number of times specified by position 1:
+| ?        | uint32    | Node ID?
+| ?        | string    | Node name?
+
+### Packet 64: Set Border
+Sets the map border.
+
+| Position | Data Type | Description
+|----------|-----------|-----------------
+| 0        | uint8     | Packet ID
+| 1        | float64   | Left position
+| 9        | float64   | Bottom position
+| 17       | float64   | Right position
+| 25       | float64   | Top position
+
+## Serverbound Packets
+### Packet 0: Set Nickname
 Sets the player's nickname.
 
 | Position | Data Type | Description
@@ -21,14 +118,14 @@ Sets the player's nickname.
 | 0        | uint8     | Packet ID
 | 1        | string    | Nickname
 
-## Packet 1: Spectate
+### Packet 1: Spectate
 Puts the player in spectator mode.
 
 | Position | Data Type | Description
 |----------|-----------|-----------------
 | 0        | uint8     | Packet ID
 
-## Packet 16: Mouse Move
+### Packet 16: Mouse Move
 Sent when the player's mouse moves.
 
 | Position | Data Type | Description
@@ -38,35 +135,35 @@ Sent when the player's mouse moves.
 | 9        | float64   | Mouse Y on canvas (absolute position?)
 | 17       | uint32    | Unknown, always 0 in vanilla
 
-## Packet 17: Split
+### Packet 17: Split
 Splits the player's cell.
 
 | Position | Data Type | Description
 |----------|-----------|-----------------
 | 0        | uint8     | Packet ID
 
-## Packet 18: Key Q Pressed
+### Packet 18: Key Q Pressed
 Sent when the player presses Q. The use for this packet (or the capture of the Q key) is unknown.
 
 | Position | Data Type | Description
 |----------|-----------|-----------------
 | 0        | uint8     | Packet ID
 
-## Packet 19: Key Q Released
+### Packet 19: Key Q Released
 Sent when the player releases Q. The use for this packet (or the capture of the Q key) is unknown.
 
 | Position | Data Type | Description
 |----------|-----------|-----------------
 | 0        | uint8     | Packet ID
 
-## Packet 21: Eject Mass
+### Packet 21: Eject Mass
 Ejects mass from the player's cell.
 
 | Position | Data Type | Description
 |----------|-----------|-----------------
 | 0        | uint8     | Packet ID
 
-## Packet 255: Reset Connection
+### Packet 255: Reset Connection
 Called at the beginning of a connection.
 
 | Position | Data Type | Description
