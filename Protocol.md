@@ -63,8 +63,8 @@ Updates the position and size of the player. Probably used when initially spawni
 |----------|-----------|-----------------
 | 0        | uint8     | Packet ID
 | 1        | float32   | X position
-| 9        | float32   | Y position
-| 17       | float32   | Size
+| 5        | float32   | Y position
+| 9        | float32   | Size
 
 ### Packet 20: Clear All Nodes
 Clears all nodes off of the player's screen.
