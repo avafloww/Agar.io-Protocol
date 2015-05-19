@@ -124,8 +124,8 @@ Sent when the player's mouse moves.
 | Position | Data Type | Description
 |----------|-----------|-----------------
 | 0        | uint8     | Packet ID
-| 1        | float64   | Mouse X on canvas (absolute position?)
-| 9        | float64   | Mouse Y on canvas (absolute position?)
+| 1        | float64   | Absolute mouse X on canvas
+| 9        | float64   | Absolute mouse Y on canvas
 | 17       | uint32    | Unknown, always 0 in vanilla
 
 ### Packet 17: Split
