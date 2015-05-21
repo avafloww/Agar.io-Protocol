@@ -32,7 +32,7 @@ Sent to the client by the server to update information about one or more nodes. 
 | ?...?    | uint32        | Node ID of each active node
 
 #### Node Data
-Each node is described by the following data. This data repeats n times at the end of the Update Nodes packet, where n is the number specified by position 1 in the packet (number of nodes).
+Each visible node is described by the following data. This data repeats n times at the end of the Update Nodes packet, where n is the number specified by position 1 in the packet (number of nodes).
 
 | Offset | Data Type | Description
 |--------|-----------|-------------------
@@ -46,6 +46,7 @@ Each node is described by the following data. This data repeats n times at the e
 | 19     | uint8     | Flags - see below
 |        |           | Skip a specific number of bytes based on the flags field. See below.
 | ?      | string    | Node name
+| ?      | uint16    | End of string
 
 The flags field is 1 byte in length, and is a bitfield. If no flag that specifies the offset is set, 0 bytes will be skipped. Here's a table describing the known behaviors of setting specific flags:
 
@@ -55,6 +56,13 @@ The flags field is 1 byte in length, and is a bitfield. If no flag that specifie
 | 2   | Advance offset after flags by 4 bytes
 | 4   | Advance offset after flags by 8 bytes
 | 8   | Advance offset after flags by 16 bytes
+
+Node data that is marked for destruction has a simpler format:
+
+| Offset | Data Type | Description
+|--------|-----------|-------------------
+| 0      | uint32    | Node ID
+| 4      | ???       | ???
 
 ### Packet 17: Update Position and Size
 Updates the position and size of the player. Probably used when initially spawning in.
