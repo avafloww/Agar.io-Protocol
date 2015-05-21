@@ -74,7 +74,7 @@ Clears all nodes off of the player's screen.
 | 0        | uint8     | Packet ID
 
 ### Packet 32: Add Node
-Adds a node to the player's screen.
+Adds a node to the player's screen. Nodes that are added by this packet are centered on by the client's camera. Probably used when splitting cells/spawning in.
 
 | Position | Data Type | Description
 |----------|-----------|-----------------
