@@ -28,8 +28,8 @@ Sent to the client by the server to update information about one or more nodes. 
 | 3...?    | Node Data     | Data for all nodes
 | ?        | uint32        | Always 0; terminates the node data listing
 | ?        | uint16        | Always 0; discarded by the client
-| ?        | uint32        | Number of active nodes
-| ?...?    | uint32        | Node ID of each active node
+| ?        | uint32        | Number of nodes marked for destroying
+| ?...?    | uint32        | Node ID of each destroyed node
 
 #### Node Data
 Each visible node is described by the following data. This data repeats n times at the end of the Update Nodes packet, where n is the number specified by position 1 in the packet (number of nodes).
