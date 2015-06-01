@@ -28,24 +28,25 @@ Sent to the client by the server to update information about one or more nodes. 
 | 3...?    | Node Data     | Data for all nodes
 | ?        | uint32        | Always 0; terminates the node data listing
 | ?        | uint16        | Always 0; discarded by the client
-| ?        | uint32        | Number of active nodes
-| ?...?    | uint32        | Node ID of each active node
+| ?        | uint32        | Number of nodes marked for destroying
+| ?...?    | uint32        | Node ID of each destroyed node
 
 #### Node Data
-Each node is described by the following data. This data repeats n times at the end of the Update Nodes packet, where n is the number specified by position 1 in the packet (number of nodes).
+Each visible node is described by the following data. This data repeats n times at the end of the Update Nodes packet, where n is the number specified by position 1 in the packet (number of nodes).
 
 | Offset | Data Type | Description
 |--------|-----------|-------------------
 | 0      | uint32    | Node ID
-| 4      | float32   | X position
-| 8      | float32   | Y position
-| 12     | float32   | Size
-| 16     | uint8     | Color (Red component)
-| 17     | uint8     | Color (Green component)
-| 18     | uint8     | Color (Blue component)
-| 19     | uint8     | Flags - see below
+| 4      | uint16    | X position
+| 6      | uint16    | Y position
+| 8      | uint16    | Size
+| 10     | uint8     | Color (Red component)
+| 11     | uint8     | Color (Green component)
+| 12     | uint8     | Color (Blue component)
+| 13     | uint8     | Flags - see below
 |        |           | Skip a specific number of bytes based on the flags field. See below.
 | ?      | string    | Node name
+| ?      | uint16    | End of string
 
 The flags field is 1 byte in length, and is a bitfield. If no flag that specifies the offset is set, 0 bytes will be skipped. Here's a table describing the known behaviors of setting specific flags:
 
@@ -53,8 +54,16 @@ The flags field is 1 byte in length, and is a bitfield. If no flag that specifie
 |-----|------------------
 | 1   | If set, the node is a virus
 | 2   | Advance offset after flags by 4 bytes
+| 5   | Agitated Virus
 | 4   | Advance offset after flags by 8 bytes
 | 8   | Advance offset after flags by 16 bytes
+
+Node data that is marked for destruction has a simpler format:
+
+| Offset | Data Type | Description
+|--------|-----------|-------------------
+| 0      | uint32    | Node ID of killing cell
+| 4      | uint32    | Node ID of killed cell
 
 ### Packet 17: Update Position and Size
 Updates the position and size of the player. Probably used when initially spawning in.
@@ -74,14 +83,14 @@ Clears all nodes off of the player's screen.
 | 0        | uint8     | Packet ID
 
 ### Packet 32: Add Node
-Adds a node to the player's screen.
+Adds a node to the player's screen. Nodes that are added by this packet are centered on by the client's camera. Probably used when splitting cells/spawning in.
 
 | Position | Data Type | Description
 |----------|-----------|-----------------
 | 0        | uint8     | Packet ID
 | 1        | uint32    | Node ID
 
-### Packet 49: Update Leaderboard
+### Packet 49: Update Leaderboard (FFA)
 Updates the leaderboard on the client's screen.
 
 | Position | Data Type | Description
@@ -91,6 +100,15 @@ Updates the leaderboard on the client's screen.
 | ?        | uint32    | Node ID
 | ?        | string    | Node name
 
+### Packet 50: Update Leaderboard (Team)
+Updates the leaderboard on the client's screen.
+
+| Position | Data Type | Description
+|----------|-----------|-----------------
+| 0        | uint8     | Packet ID
+| 1        | uint32    | Amount of teams
+| ?        | float32   | Team data
+
 ### Packet 64: Set Border
 Sets the map border.
 
@@ -98,9 +116,9 @@ Sets the map border.
 |----------|-----------|-----------------
 | 0        | uint8     | Packet ID
 | 1        | float64   | Left position
-| 9        | float64   | Bottom position
+| 9        | float64   | Top position
 | 17       | float64   | Right position
-| 25       | float64   | Top position
+| 25       | float64   | Bottom position
 
 ## Serverbound Packets
 ### Packet 0: Set Nickname
