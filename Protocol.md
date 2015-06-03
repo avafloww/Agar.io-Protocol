@@ -24,8 +24,10 @@ Sent to the client by the server to update information about one or more nodes. 
 | Position | Data Type     | Description
 |----------|---------------|-----------------
 | 0        | uint8         | Packet ID
-| 1        | uint16        | Number of nodes to be destroyed
-| 3...?    | Node Data     | Data for all nodes
+| 1        | uint16        | Number of nodes to be destroyed (The following two fields repeats depending on this field)
+| 3...?    | uint32        | Removed node's killer
+| ?...?    | uint32        | Removed node's id
+| ?...?    | Node Data     | Data for all nodes
 | ?        | uint32        | Always 0; terminates the node data listing
 | ?        | uint16        | Always 0; discarded by the client
 | ?        | uint32        | Number of active nodes
@@ -37,9 +39,9 @@ Each node is described by the following data. This data repeats n times at the e
 | Offset | Data Type | Description
 |--------|-----------|-------------------
 | 0      | uint32    | Node ID
-| 4      | float32   | X position
-| 8      | float32   | Y position
-| 12     | float32   | Size
+| 4      | uint16    | X position
+| 8      | uint16    | Y position
+| 12     | uint16    | Size
 | 16     | uint8     | Color (Red component)
 | 17     | uint8     | Color (Green component)
 | 18     | uint8     | Color (Blue component)
