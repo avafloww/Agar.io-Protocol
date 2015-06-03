@@ -39,7 +39,7 @@ Each visible node is described by the following data. This data repeats n times 
 | 0      | uint32    | Node ID
 | 4      | uint16    | X position
 | 6      | uint16    | Y position
-| 8      | uint16    | Size
+| 8      | uint16    | Radius of node
 | 10     | uint8     | Color (Red component)
 | 11     | uint8     | Color (Green component)
 | 12     | uint8     | Color (Blue component)
@@ -66,14 +66,14 @@ Node data that is marked for destruction has a simpler format:
 | 4      | uint32    | Node ID of killed cell
 
 ### Packet 17: Update Position and Size
-Updates the position and size of the player. Probably used when initially spawning in.
+Updates the position and size of the player. Used when spectating.
 
 | Position | Data Type | Description
 |----------|-----------|-----------------
 | 0        | uint8     | Packet ID
 | 1        | float32   | X position
 | 5        | float32   | Y position
-| 9        | float32   | Size
+| 9        | float32   | Zoom factor of client
 
 ### Packet 20: Clear All Nodes
 Clears all nodes off of the player's screen.
