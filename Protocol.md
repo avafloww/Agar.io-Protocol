@@ -52,11 +52,11 @@ The flags field is 1 byte in length, and is a bitfield. If no flag that specifie
 
 | Bit | Behavior
 |-----|------------------
-| 1   | If set, the node is a virus
-| 2   | Advance offset after flags by 4 bytes
-| 5   | Agitated Virus
-| 4   | Advance offset after flags by 8 bytes
-| 8   | Advance offset after flags by 16 bytes
+| 0   | If set, the node is a virus
+| 1   | Advance offset after flags by 4 bytes
+| 2   | Advance offset after flags by 8 bytes
+| 3   | Advance offset after flags by 16 bytes
+| 4   | Agitated Virus
 
 Node data that is marked for destruction has a simpler format:
 
@@ -107,7 +107,7 @@ Updates the leaderboard on the client's screen.
 |----------|-----------|-----------------
 | 0        | uint8     | Packet ID
 | 1        | uint32    | Amount of teams
-| ?        | float32   | Team data
+| ?        | float32   | Team score
 
 ### Packet 64: Set Border
 Sets the map border.
@@ -174,11 +174,19 @@ Ejects mass from the player's cell.
 |----------|-----------|-----------------
 | 0        | uint8     | Packet ID
 
-### Packet 255: Reset Connection
-Called at the beginning of a connection.
+### Packet 254: Reset Connection 1
+Sent at the beginning of a connection, before packet 255.
 
 | Position | Data Type | Description
 |----------|-----------|-----------------
 | 0        | uint8     | Packet ID
-| 1        | uint32    | Unknown, always 1 in vanilla
+| 1        | uint32    | Always 4 in vanilla. Likely protocol version.
+
+### Packet 255: Reset Connection 2
+Sent at the beginning of a connection, after packet 254.
+
+| Position | Data Type | Description
+|----------|-----------|-----------------
+| 0        | uint8     | Packet ID
+| 1        | uint32    | Always 673720361 in vanilla. Likely protocol version.
 
