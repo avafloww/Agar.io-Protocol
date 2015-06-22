@@ -32,7 +32,7 @@ Sent to the client by the server to update information about one or more nodes. 
 | ?...?    | uint32        | Node ID of each destroyed node
 
 #### Node Data
-Each visible node is described by the following data. This data repeats n times at the end of the Update Nodes packet, where n is the number specified by position 1 in the packet (number of nodes).
+Each visible node is described by the following data. This data repeats n times at the end of the Update Nodes packet, where n is the number specified by position 1 in the packet (number of nodes). Nodes that are stationary (like food) are only sent **once** to the client. In additon, the name field of each node is sent **once**.
 
 | Offset | Data Type | Description
 |--------|-----------|-------------------
@@ -82,6 +82,15 @@ Clears all nodes off of the player's screen.
 |----------|-----------|-----------------
 | 0        | uint8     | Packet ID
 
+### Packet 21: Draw Line
+Draws a line from all the player cells to the specified position.
+
+| Position | Data Type | Description
+|----------|-----------|-----------------
+| 0        | uint8     | Packet ID
+| 1        | uint16    | X position
+| 3        | uint16    | Y position
+
 ### Packet 32: Add Node
 Adds a node to the player's screen. Nodes that are added by this packet are centered on by the client's camera. Probably used when splitting cells/spawning in.
 
@@ -101,7 +110,7 @@ Updates the leaderboard on the client's screen.
 | ?        | string    | Node name
 
 ### Packet 50: Update Leaderboard (Team)
-Updates the leaderboard on the client's screen.
+Updates the leaderboard on the client's screen. Team score is the percentage of the total mass in game that the team has.
 
 | Position | Data Type | Description
 |----------|-----------|-----------------
