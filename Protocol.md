@@ -191,7 +191,7 @@ Used to authenticate with a one-use token issued by the load balancer.
 | Position | Data Type | Description
 |----------|-----------|-----------------
 | 0        | uint8     | Packet ID
-| 1        | string    | Token. 8 characters, alpha-numeric, and some symbols.
+| 1        | string    | Token. 8 characters, alpha-numeric, and some symbols. (uint8)
 
 ### Packet 254: Reset Connection 1
 Sent at the beginning of a connection, before packet 255.
