@@ -163,14 +163,15 @@ Splits the player's cell.
 | 0        | uint8     | Packet ID
 
 ### Packet 18: Key Q Pressed
-Sent when the player presses Q. The use for this packet (or the capture of the Q key) is unknown.
+Sent when the player presses Q.  
+In early iterations, was used to bring your cells closer together after spreading them apart.
 
 | Position | Data Type | Description
 |----------|-----------|-----------------
 | 0        | uint8     | Packet ID
 
 ### Packet 19: Key Q Released
-Sent when the player releases Q. The use for this packet (or the capture of the Q key) is unknown.
+Sent when the player releases Q. See packet 18.
 
 | Position | Data Type | Description
 |----------|-----------|-----------------
@@ -182,6 +183,15 @@ Ejects mass from the player's cell.
 | Position | Data Type | Description
 |----------|-----------|-----------------
 | 0        | uint8     | Packet ID
+
+### Packet 80: Send Token
+Sent at the beginning of a connection, after packet 255.  
+Used to authenticate with a one-use token issued by the load balancer.
+
+| Position | Data Type | Description
+|----------|-----------|-----------------
+| 0        | uint8     | Packet ID
+| 1        | string    | Token. 8 characters, alpha-numeric, and some symbols.
 
 ### Packet 254: Reset Connection 1
 Sent at the beginning of a connection, before packet 255.
@@ -197,5 +207,5 @@ Sent at the beginning of a connection, after packet 254.
 | Position | Data Type | Description
 |----------|-----------|-----------------
 | 0        | uint8     | Packet ID
-| 1        | uint32    | Always 673720361 in vanilla. Likely protocol version.
+| 1        | uint32    | Likely protocol version. Currently 154669603 as of vanilla version 558.
 
