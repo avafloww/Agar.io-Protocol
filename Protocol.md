@@ -37,13 +37,13 @@ Each visible node is described by the following data. This data repeats n times 
 | Offset | Data Type | Description
 |--------|-----------|-------------------
 | 0      | uint32    | Node ID
-| 4      | uint16    | X position
-| 6      | uint16    | Y position
-| 8      | uint16    | Radius of node
-| 10     | uint8     | Color (Red component)
-| 11     | uint8     | Color (Green component)
-| 12     | uint8     | Color (Blue component)
-| 13     | uint8     | Flags - see below
+| 4      | uint32    | X position
+| 8      | uint32    | Y position
+| 12     | uint16    | Radius of node
+| 14     | uint8     | Color (Red component)
+| 15     | uint8     | Color (Green component)
+| 16     | uint8     | Color (Blue component)
+| 17     | uint8     | Flags - see below
 |        |           | Skip a specific number of bytes based on the flags field. See below.
 | ?      | string    | Node name
 | ?      | uint16    | End of string
