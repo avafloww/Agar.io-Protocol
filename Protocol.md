@@ -199,7 +199,7 @@ Sent at the beginning of a connection, before packet 255.
 | Position | Data Type | Description
 |----------|-----------|-----------------
 | 0        | uint8     | Packet ID
-| 1        | uint32    | Always 4 in vanilla. Likely protocol version.
+| 1        | uint32    | Protocol version. Currently 5 as of vanilla v561.26.
 
 ### Packet 255: Reset Connection 2
 Sent at the beginning of a connection, after packet 254.
@@ -207,5 +207,5 @@ Sent at the beginning of a connection, after packet 254.
 | Position | Data Type | Description
 |----------|-----------|-----------------
 | 0        | uint8     | Packet ID
-| 1        | uint32    | Likely protocol version. Currently 154669603 as of vanilla version 558.
+| 1        | uint32    | Protocol version. Currently 154669603 as of vanilla v561.26.
 
