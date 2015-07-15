@@ -153,7 +153,7 @@ Sent when the player's mouse moves.
 | 0        | uint8     | Packet ID
 | 1        | float64   | Absolute mouse X on canvas
 | 9        | float64   | Absolute mouse Y on canvas
-| 17       | uint32    | Unknown, always 0 in vanilla
+| 17       | uint32    | Node ID of the cell to control, always 0 in vanilla
 
 ### Packet 17: Split
 Splits the player's cell.
